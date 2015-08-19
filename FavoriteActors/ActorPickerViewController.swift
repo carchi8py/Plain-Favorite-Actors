@@ -43,6 +43,10 @@ class ActorPickerViewController: UIViewController, UITableViewDelegate, UITableV
         self.searchBar.becomeFirstResponder()
     }
     
+    lazy var sharedContext = {
+        CoreDataStackManager.sharedInstance().managedObjectContext!
+        }()
+    
     
     // MARK: - Actions
     
@@ -89,7 +93,7 @@ class ActorPickerViewController: UIViewController, UITableViewDelegate, UITableV
                 // Create an array of Person instances from the JSON dictionaries
                 // If we change this so that it inserts into a context, which context should it be? 
                 self.actors = actorDictionaries.map() {
-                    Person(dictionary: $0)
+                    Person(dictionary: $0, context: self.sharedContext)
                 }
                 
                 // Reload the table on the main thread
